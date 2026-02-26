@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="obsidian">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0a" id="metaThemeColor">
+<meta name="description" content="Build your personal knowledge map. Connect ideas, draw diagrams, write notes — all in one place.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SysMap">
+<link rel="manifest" href="manifest.json">
+<title>SysMap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Syne:wght@700;800&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ══ LANDING ══ -->
+<div id="landing" class="landing">
+  <nav class="land-nav">
+    <div class="land-logo">SysMap</div>
+    <div class="land-nav-right">
+      <span class="land-free-badge">Free</span>
+      <button class="btn btn-primary" onclick="Auth.signIn()">Get started</button>
+    </div>
+  </nav>
+
+  <section class="land-hero">
+    <div class="land-hero-text">
+      <p class="land-eyebrow">Personal knowledge OS</p>
+      <h1 class="land-headline">Think in maps,<br>not documents.</h1>
+      <p class="land-body">Build a visual map of anything you're learning. Connect concepts, draw diagrams, paste screenshots, write notes — all inside one node, in whatever order makes sense to you.</p>
+      <div class="land-actions">
+        <button class="btn btn-primary btn-lg" onclick="Auth.signIn()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          Sign in with Google
+        </button>
+        <span class="land-subtext">Free forever · Your data stays private</span>
+      </div>
+    </div>
+    <div class="land-visual">
+      <canvas id="landCanvas" width="340" height="340"></canvas>
+    </div>
+  </section>
+
+  <section class="land-features">
+    <div class="land-feat">
+      <div class="land-feat-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+      </div>
+      <h3>Flexible blocks</h3>
+      <p>Add text, drawings, or images in any order. Each node is a blank canvas — no forced structure.</p>
+    </div>
+    <div class="land-feat">
+      <div class="land-feat-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+      </div>
+      <h3>Visual graph</h3>
+      <p>See how everything connects. Link nodes together and watch your knowledge map build itself.</p>
+    </div>
+    <div class="land-feat">
+      <div class="land-feat-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      </div>
+      <h3>Highlights &amp; comments</h3>
+      <p>Select any text, highlight it in color, drop a note. Like annotating a book, but it's yours.</p>
+    </div>
+    <div class="land-feat">
+      <div class="land-feat-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+      </div>
+      <h3>Custom themes</h3>
+      <p>Choose a theme that matches how you think. Import themes from others or export your own.</p>
+    </div>
+  </section>
+
+  <footer class="land-footer">
+    <span>SysMap · Free · Built on Firebase</span>
+    <span>Your data is private and encrypted</span>
+  </footer>
+</div>
+
+<!-- ══ APP SHELL ══ -->
+<div id="app" class="app hidden">
+
+  <!-- Header -->
+  <header class="header" id="appHeader">
+    <button class="header-back hidden" id="headerBack" onclick="App.closeEditor()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    </button>
+    <div class="header-logo" onclick="App.showGraph()">SysMap</div>
+    <div class="header-spacer"></div>
+    <div class="header-actions" id="headerActions">
+      <div class="sync-indicator" id="syncIndicator" title="Sync status"></div>
+      <button class="header-btn" onclick="Glossary.open()" title="Glossary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        <span>Glossary</span>
+      </button>
+      <button class="header-btn" onclick="Themes.openPicker()" title="Theme">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 000 20"/><path d="M2 12h20"/></svg>
+        <span>Theme</span>
+      </button>
+      <button class="header-btn" onclick="App.exportData()" title="Export">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span>Export</span>
+      </button>
+      <button class="btn btn-primary btn-sm" onclick="App.openNewNodeModal()">+ New</button>
+      <button class="header-btn header-btn-icon" onclick="Auth.signOut()" title="Sign out">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main layout -->
+  <div class="app-body">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-search">
+        <div class="search-wrap">
+          <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" id="searchInput" placeholder="Search nodes..." oninput="App.search(this.value)">
+        </div>
+      </div>
+      <div class="sidebar-nodes" id="nodeList"></div>
+      <div class="sidebar-foot">
+        <button class="sidebar-foot-btn" onclick="App.autoLayout()" title="Auto layout">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="19" cy="19" r="2"/><path d="M7 12h5M14 6.5l-5 4M14 17.5l-5-4"/></svg>
+          Layout
+        </button>
+        <button class="sidebar-foot-btn" onclick="Graph.zoomFit()" title="Fit view">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3h5M3 3v5M21 3h-5M21 3v5M3 21h5M3 21v-5M21 21h-5M21 21v-5"/></svg>
+          Fit
+        </button>
+        <button class="sidebar-foot-btn" onclick="App.importData()" title="Import">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Import
+        </button>
+      </div>
+    </aside>
+
+    <!-- Graph -->
+    <div class="graph-wrap" id="graphWrap">
+      <canvas id="graphCanvas"></canvas>
+      <div class="graph-controls">
+        <button class="graph-ctrl-btn" onclick="Graph.zoom(1.2)">+</button>
+        <button class="graph-ctrl-btn" onclick="Graph.zoom(0.8)">−</button>
+      </div>
+      <div class="graph-empty" id="graphEmpty">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity=".3"><circle cx="5" cy="12" r="3"/><circle cx="19" cy="5" r="3"/><circle cx="19" cy="19" r="3"/><path d="M8 12h5M14.5 6.5l-4 4M14.5 17.5l-4-4"/></svg>
+        <p class="graph-empty-title">Your map is empty</p>
+        <p class="graph-empty-sub">Click <strong>+ New</strong> to create your first node</p>
+      </div>
+      <div id="graphTooltip" class="graph-tooltip"></div>
+    </div>
+
+    <!-- Editor panel -->
+    <div class="editor hidden" id="editor">
+      <div class="editor-head">
+        <div class="editor-title-row">
+          <input class="editor-name" id="editorName" placeholder="Untitled">
+          <div class="editor-cat-badge" id="editorCatBadge"></div>
+        </div>
+        <div class="editor-theme-row" id="editorThemeRow"></div>
+      </div>
+
+      <div class="editor-toolbar">
+        <button class="block-add-btn" onclick="Blocks.add('text')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 10H3M21 6H3M21 14H3M17 18H3"/></svg>
+          Text
+        </button>
+        <button class="block-add-btn" onclick="Blocks.add('draw')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          Draw
+        </button>
+        <button class="block-add-btn" onclick="Blocks.add('image')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          Image
+        </button>
+        <div class="toolbar-spacer"></div>
+        <button class="editor-conn-btn" id="editorConnBtn" onclick="App.toggleConnPanel()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          Connect
+        </button>
+      </div>
+
+      <!-- Connection panel (collapsible) -->
+      <div class="conn-panel hidden" id="connPanel">
+        <div class="conn-panel-inner" id="connPanelInner"></div>
+      </div>
+
+      <div class="blocks-area" id="blocksArea"></div>
+
+      <div class="editor-foot">
+        <span class="save-status" id="saveStatus"></span>
+        <button class="btn btn-ghost btn-sm" onclick="App.deleteNode()">Delete</button>
+        <button class="btn btn-primary btn-sm" onclick="App.saveNode()" id="saveBtn">Save</button>
+      </div>
+    </div>
+
+  </div><!-- /.app-body -->
+
+  <!-- Mobile bottom nav -->
+  <nav class="mob-nav" id="mobNav">
+    <button class="mob-tab active" id="mobTabGraph" onclick="Mobile.show('graph')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="19" cy="19" r="2"/><path d="M7 12h5M14 6.5l-5 4M14 17.5l-5-4"/></svg>
+      <span>Map</span>
+    </button>
+    <button class="mob-tab" id="mobTabNodes" onclick="Mobile.show('nodes')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      <span>Nodes</span>
+    </button>
+    <button class="mob-tab mob-add-btn" onclick="App.openNewNodeModal()">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </button>
+    <button class="mob-tab" onclick="Glossary.open()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+      <span>Lingo</span>
+    </button>
+    <button class="mob-tab" onclick="Mobile.showMore()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+      <span>More</span>
+    </button>
+  </nav>
+
+  <!-- Mobile nodes list overlay -->
+  <div class="mob-overlay hidden" id="mobNodesOverlay">
+    <div class="mob-overlay-head">
+      <span class="mob-overlay-title">Nodes</span>
+      <button class="icon-btn" onclick="Mobile.show('graph')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="mob-search-wrap">
+      <input type="text" class="mob-search-input" placeholder="Search nodes..." oninput="Mobile.search(this.value)">
+    </div>
+    <div class="mob-nodes-list" id="mobNodesList"></div>
+  </div>
+
+  <!-- Mobile more sheet -->
+  <div class="mob-sheet-bg hidden" id="mobSheetBg" onclick="Mobile.closeSheet()">
+    <div class="mob-sheet" id="mobSheet" onclick="e=>e.stopPropagation()">
+      <div class="mob-sheet-handle"></div>
+      <button class="mob-sheet-item" onclick="Themes.openPicker();Mobile.closeSheet()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 000 20"/><path d="M2 12h20"/></svg>
+        Change theme
+      </button>
+      <button class="mob-sheet-item" onclick="App.exportData();Mobile.closeSheet()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Export data
+      </button>
+      <button class="mob-sheet-item" onclick="App.importData();Mobile.closeSheet()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Import data
+      </button>
+      <button class="mob-sheet-item" onclick="Graph.autoLayout();Mobile.closeSheet()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="19" cy="19" r="2"/><path d="M8 12h5M14 6.5l-5 4M14 17.5l-5-4"/></svg>
+        Auto layout
+      </button>
+      <button class="mob-sheet-item danger" onclick="Auth.signOut()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign out
+      </button>
+    </div>
+  </div>
+
+</div><!-- /#app -->
+
+<!-- ══ OVERLAYS ══ -->
+
+<!-- Format bar -->
+<div class="fmt-bar" id="fmtBar">
+  <button class="fmt-btn" onclick="Blocks.fmt('bold')"><b>B</b></button>
+  <button class="fmt-btn" onclick="Blocks.fmt('italic')"><i>I</i></button>
+  <button class="fmt-btn" onclick="Blocks.fmt('underline')"><u>U</u></button>
+  <div class="fmt-sep"></div>
+  <button class="fmt-hl-dot" style="--c:#ffd60a" onclick="Blocks.highlight('#ffd60a44','#ffd60a')"></button>
+  <button class="fmt-hl-dot" style="--c:#30d158" onclick="Blocks.highlight('#30d15844','#30d158')"></button>
+  <button class="fmt-hl-dot" style="--c:#ff6b35" onclick="Blocks.highlight('#ff6b3544','#ff6b35')"></button>
+  <button class="fmt-hl-dot" style="--c:#bf5af2" onclick="Blocks.highlight('#bf5af244','#bf5af2')"></button>
+  <div class="fmt-sep"></div>
+  <button class="fmt-btn" onclick="Blocks.addComment()">💬</button>
+  <button class="fmt-btn" onclick="Blocks.removeHighlight()">✕</button>
+</div>
+
+<!-- Comment popup -->
+<div class="comment-popup hidden" id="commentPopup">
+  <p class="comment-quote" id="commentQuote"></p>
+  <textarea class="comment-ta" id="commentInput" placeholder="Add a note..."></textarea>
+  <div class="comment-actions">
+    <button class="btn btn-primary btn-sm" onclick="Blocks.saveComment()">Save</button>
+    <button class="btn btn-ghost btn-sm btn-danger" onclick="Blocks.deleteComment()">Remove</button>
+    <button class="btn btn-ghost btn-sm" onclick="Blocks.closeComment()">Cancel</button>
+  </div>
+</div>
+
+<!-- Glossary panel -->
+<div class="panel-overlay hidden" id="glossaryOverlay" onclick="if(event.target===this)Glossary.close()">
+  <div class="panel glossary-panel">
+    <div class="panel-head">
+      <h2 class="panel-title">Glossary</h2>
+      <button class="icon-btn" onclick="Glossary.close()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="panel-search">
+      <input type="text" id="glosSearch" placeholder="Search terms..." oninput="Glossary.search(this.value)">
+    </div>
+    <div class="glos-list" id="glosList"></div>
+    <div class="glos-add">
+      <p class="glos-add-label">Add term</p>
+      <input class="form-input" id="glosTerm" placeholder="Term">
+      <textarea class="form-input form-ta" id="glosDef" placeholder="Definition"></textarea>
+      <button class="btn btn-primary btn-sm" onclick="Glossary.addTerm()">Add</button>
+    </div>
+  </div>
+</div>
+
+<!-- Theme picker panel -->
+<div class="panel-overlay hidden" id="themeOverlay" onclick="if(event.target===this)Themes.close()">
+  <div class="panel theme-panel">
+    <div class="panel-head">
+      <h2 class="panel-title">Theme</h2>
+      <button class="icon-btn" onclick="Themes.close()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="theme-grid" id="themeGrid"></div>
+    <div class="theme-actions">
+      <button class="btn btn-ghost btn-sm" onclick="Themes.exportCurrent()">Export current theme</button>
+      <button class="btn btn-ghost btn-sm" onclick="Themes.importTheme()">Import theme</button>
+    </div>
+  </div>
+</div>
+
+<!-- New node modal -->
+<div class="modal-overlay hidden" id="modalOverlay" onclick="if(event.target===this)App.closeModal()">
+  <div class="modal">
+    <h3 class="modal-title">New node</h3>
+    <input class="form-input" id="newNodeName" placeholder="Name this node...">
+    <select class="form-select" id="newNodeCat">
+      <option value="concept">Concept</option>
+      <option value="system">System</option>
+      <option value="person">Person</option>
+      <option value="place">Place</option>
+      <option value="event">Event</option>
+      <option value="thing">Thing</option>
+      <option value="question">Question</option>
+    </select>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="App.closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="App.createNode()">Create</button>
+    </div>
+  </div>
+</div>
+
+<!-- Fullscreen image viewer -->
+<div class="fs-viewer hidden" id="fsViewer" onclick="this.classList.add('hidden')">
+  <img id="fsViewerImg" src="" alt="">
+</div>
+
+<input type="file" id="imgFileInput" accept="image/*" style="display:none" onchange="Blocks.handleImageUpload(event)">
+<input type="file" id="importFileInput" accept=".json" style="display:none" onchange="App.handleImport(event)">
+<input type="file" id="themeImportInput" accept=".json" style="display:none" onchange="Themes.handleImport(event)">
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+<!-- NO Firebase Storage — images stored in Firestore as base64. Free. -->
+
+<!-- App scripts -->
+<script src="js/config.js"></script>
+<script src="js/themes.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
