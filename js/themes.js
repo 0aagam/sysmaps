@@ -1,11 +1,11 @@
 // ══════════════════════════════════════════════
-// SYSMAP — THEME SYSTEM
+// SYSMAP — THEME SYSTEM (ES6 MODULE)
 // Themes control the entire visual feel:
 // colors, radius, shadows, and fonts.
 // Obsidian is the original SysMap dark theme.
 // ══════════════════════════════════════════════
 
-const BUILT_IN_THEMES = {
+export const BUILT_IN_THEMES = {
   obsidian: {
     id: 'obsidian',
     name: 'Obsidian',
@@ -51,7 +51,7 @@ const BUILT_IN_THEMES = {
 
 // Exportable version of Obsidian theme
 // (what gets written to JSON when user exports)
-const OBSIDIAN_EXPORT = {
+export const OBSIDIAN_EXPORT = {
   id: 'obsidian',
   name: 'Obsidian',
   description: 'Original SysMap dark theme — sharp edges, neon accent',
@@ -85,7 +85,7 @@ const OBSIDIAN_EXPORT = {
 };
 
 // Node category colors — same across all themes
-const CAT_COLORS = {
+export const CAT_COLORS = {
   concept:   '#f59e0b',
   system:    '#ff6b35',
   person:    '#ec4899',
@@ -96,7 +96,7 @@ const CAT_COLORS = {
 };
 
 // ══════════════════════════════════════════════
-const Themes = (() => {
+export const Themes = (() => {
   let current = 'obsidian';
   let customThemes = []; // user-imported themes
   let activeCustomVars = null;

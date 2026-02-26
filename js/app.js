@@ -1,16 +1,23 @@
 // ══════════════════════════════════════════════
-// SYSMAP — MAIN APPLICATION
+// SYSMAP — MAIN APPLICATION (ES6 MODULE)
 // Modules: Auth, DB, App, Graph, Blocks,
 //          Glossary, Mobile, Landing
 // ══════════════════════════════════════════════
 
-firebase.initializeApp(FIREBASE_CONFIG);
-const _auth = firebase.auth();
-const _db   = firebase.firestore();
+import { FIREBASE_CONFIG, initializeFirebase } from './config.js';
+import { Themes } from './themes.js';
+
+// Initialize Firebase and get instances
+const fireAuth = window.firebase.auth();
+const fireDb   = window.firebase.firestore();
 // No Firebase Storage — images stored as base64 in Firestore. Completely free.
 
+// Use the instances
+const _auth = fireAuth;
+const _db   = fireDb;
+
 // ── GLOBAL STATE ──
-let STATE = {
+export let STATE = {
   uid:       null,
   nodes:     [],
   activeId:  null,
@@ -20,12 +27,12 @@ let STATE = {
 
 // ── DEBOUNCE SAVE ──
 const _saveTimers = {};
-function debounceSave(node, delay = 1800) {
+export function debounceSave(node, delay = 1800) {
   clearTimeout(_saveTimers[node.id]);
   DB.setSyncing('syncing');
   _saveTimers[node.id] = setTimeout(() => DB.persist(node), delay);
 }
-function saveImmediate(node) {
+export function saveImmediate(node) {
   clearTimeout(_saveTimers[node.id]);
   return DB.persist(node);
 }
@@ -33,7 +40,7 @@ function saveImmediate(node) {
 // ══════════════════════════════════════════════
 // AUTH
 // ══════════════════════════════════════════════
-const Auth = (() => {
+export const Auth = (() => {
   function signIn() {
     _auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(console.error);
   }
@@ -62,7 +69,7 @@ const Auth = (() => {
 // ══════════════════════════════════════════════
 // DATABASE
 // ══════════════════════════════════════════════
-const DB = (() => {
+export const DB = (() => {
   function nodesRef() { return _db.collection('users').doc(STATE.uid).collection('nodes'); }
   function imagesRef() { return _db.collection('users').doc(STATE.uid).collection('images'); }
   function glossRef()  { return _db.collection('users').doc(STATE.uid).collection('glossary'); }
@@ -132,7 +139,7 @@ const DB = (() => {
 // ══════════════════════════════════════════════
 // MAIN APP
 // ══════════════════════════════════════════════
-const App = (() => {
+export const App = (() => {
   function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2,5); }
 
   // ── NEW NODE MODAL ──
@@ -424,7 +431,7 @@ const App = (() => {
 // ══════════════════════════════════════════════
 // GRAPH
 // ══════════════════════════════════════════════
-const Graph = (() => {
+export const Graph = (() => {
   let cvs, ctx, W, H;
   let scale = 1;
   let offset = { x: 0, y: 0 };
@@ -673,7 +680,7 @@ const Graph = (() => {
 // ══════════════════════════════════════════════
 // BLOCKS
 // ══════════════════════════════════════════════
-const Blocks = (() => {
+export const Blocks = (() => {
   const _drawState = {}; // blockId → draw state
   const _annoState = {}; // blockId → annotation state
   let _savedRange = null;
@@ -1094,7 +1101,7 @@ const Blocks = (() => {
 // ══════════════════════════════════════════════
 // GLOSSARY
 // ══════════════════════════════════════════════
-const Glossary = (() => {
+export const Glossary = (() => {
   const DEFAULT_TERMS = [
     {term:'Node',def:"The basic unit of your map. Each node is a blank page — add text, drawings, or images in any order. Connect nodes to show relationships."},
     {term:'Block',def:"A unit of content inside a node. Can be text (with formatting and comments), a drawing canvas, or an image with annotation support."},
@@ -1147,7 +1154,7 @@ const Glossary = (() => {
 // ══════════════════════════════════════════════
 // MOBILE
 // ══════════════════════════════════════════════
-const Mobile = (() => {
+export const Mobile = (() => {
   function isMobile() { return window.innerWidth <= 768; }
 
   function show(view) {
@@ -1207,7 +1214,7 @@ const Mobile = (() => {
 // ══════════════════════════════════════════════
 // LANDING DEMO ANIMATION
 // ══════════════════════════════════════════════
-function initLandingDemo() {
+export function initLandingDemo() {
   const cvs = document.getElementById('landCanvas');
   if (!cvs) return;
   const ctx = cvs.getContext('2d');
@@ -1258,44 +1265,12 @@ function initLandingDemo() {
 }
 
 // ══════════════════════════════════════════════
-// KEYBOARD SHORTCUTS
+// KEYBOARD SHORTCUTS & EVENT LISTENERS
+// (These are now handled by main.js for module consistency)
 // ══════════════════════════════════════════════
-document.addEventListener('keydown', e => {
-  const inInput = ['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName);
-  const inCE = document.activeElement.contentEditable === 'true';
-  if (e.key === 'Escape') {
-    if (!document.getElementById('modalOverlay').classList.contains('hidden')) App.closeModal();
-    else if (!document.getElementById('glossaryOverlay').classList.contains('hidden')) Glossary.close();
-    else if (!document.getElementById('themeOverlay').classList.contains('hidden')) Themes.close();
-    else { Blocks.closeComment(); document.getElementById('fmtBar').classList.remove('show'); }
-  }
-  if ((e.metaKey||e.ctrlKey) && e.key === 's') { e.preventDefault(); App.saveNode(); }
-  if ((e.metaKey||e.ctrlKey) && e.key === 'n' && !inInput && !inCE) { e.preventDefault(); App.openNewNodeModal(); }
-});
-
-document.getElementById('newNodeName')?.addEventListener('keydown', e => { if(e.key==='Enter') App.createNode(); });
-
-document.addEventListener('click', e => {
-  if (!e.target.closest('#fmtBar') && !e.target.closest('.block-content')) {
-    document.getElementById('fmtBar').classList.remove('show');
-  }
-  if (!e.target.closest('#commentPopup') && !e.target.closest('mark')) {
-    Blocks.closeComment();
-  }
-});
+// Keyboard and click handlers are attached from main.js
 
 // ══════════════════════════════════════════════
 // BOOT
+// (Moved to main.js for ES6 module initialization)
 // ══════════════════════════════════════════════
-window.addEventListener('resize', () => {
-  Graph.resize();
-});
-
-window.addEventListener('load', () => {
-  Themes.init();
-  Graph.init();
-  initLandingDemo();
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
-  }
-});

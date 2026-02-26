@@ -1,0 +1,69 @@
+# Environment & Configuration
+.env
+.env.local
+.env.*.local
+.env.production.local
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Build & Distribution
+dist/
+build/
+out/
+*.tsbuildinfo
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.env.local
+*.sublime-project
+*.sublime-workspace
+.LSOverride
+.AppleDouble
+.AppleDB
+
+# OS
+Thumbs.db
+desktop.ini
+.Spotlight-V100
+.Trashes
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Cache
+.cache/
+.parcel-cache
+.eslintcache
+
+# Local development
+.vercel
+.firebase/
+.firebaserc
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Testing
+coverage/
+.nyc_output
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+temp/

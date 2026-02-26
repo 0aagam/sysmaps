@@ -1,36 +1,20 @@
-// ══════════════════════════════════════════════
-// SYSMAP — FIREBASE CONFIG
-// Edit this file with your Firebase project details.
-// Get this from: console.firebase.google.com
-//   → Your project → Project Settings → Your apps → Web app
-//
-// Steps:
-// 1. Create Firebase project at console.firebase.google.com
-// 2. Enable Authentication → Google sign-in
-// 3. Create Firestore database (production mode)
-// 4. Paste your config below
-// 5. Deploy to Vercel by dragging this folder
-// ══════════════════════════════════════════════
-
-const FIREBASE_CONFIG = {
-  apiKey:            "REPLACE_API_KEY",
-  authDomain:        "REPLACE.firebaseapp.com",
-  projectId:         "REPLACE_PROJECT_ID",
-  storageBucket:     "REPLACE.appspot.com",
-  messagingSenderId: "REPLACE_SENDER_ID",
-  appId:             "REPLACE_APP_ID"
+// Firebase Configuration from environment variables
+// Export the config object for use in other modules
+export const FIREBASE_CONFIG = {
+  apiKey: window.ENV?.FIREBASE_API_KEY || "AIzaSyDhSDk2JLRx7Gx3ostmFZ6IWqO8PnEdRaM",
+  authDomain: window.ENV?.FIREBASE_AUTH_DOMAIN || "sysmaps-3378d.firebaseapp.com",
+  projectId: window.ENV?.FIREBASE_PROJECT_ID || "sysmaps-3378d",
+  storageBucket: window.ENV?.FIREBASE_STORAGE_BUCKET || "sysmaps-3378d.firebasestorage.app",
+  messagingSenderId: window.ENV?.FIREBASE_MESSAGING_SENDER_ID || "21224827114",
+  appId: window.ENV?.FIREBASE_APP_ID || "1:21224827114:web:eb4ffd4249eff31a134f93",
+  measurementId: window.ENV?.FIREBASE_MEASUREMENT_ID || "G-Z5S9V3WBF8"
 };
 
-// ── FIRESTORE RULES (paste into Firebase Console → Firestore → Rules) ──
-//
-// rules_version = '2';
-// service cloud.firestore {
-//   match /databases/{database}/documents {
-//     match /users/{userId}/{document=**} {
-//       allow read, write: if request.auth != null && request.auth.uid == userId;
-//     }
-//   }
-// }
-//
-// NOTE: No Firebase Storage needed. Images are stored as base64 in
-// Firestore documents. This keeps everything on the free tier.
+// Initialize Firebase and return the instances
+export function initializeFirebase() {
+  firebase.initializeApp(FIREBASE_CONFIG);
+  return {
+    auth: firebase.auth(),
+    db: firebase.firestore()
+  };
+}

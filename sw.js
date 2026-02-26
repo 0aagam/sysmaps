@@ -1,5 +1,5 @@
 const CACHE = 'sysmap-v1';
-const SHELL = ['/', '/index.html', '/css/style.css', '/js/config.js', '/js/themes.js', '/js/app.js'];
+const SHELL = ['/', '/index.html', '/css/style.css', '/js/env-loader.js', '/js/config.js', '/js/themes.js', '/js/app.js', '/js/main.js'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).catch(() => {}));
