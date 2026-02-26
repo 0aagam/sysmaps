@@ -1,36 +1,21 @@
-// ══════════════════════════════════════════════
-// SYSMAP — FIREBASE CONFIG
-// Edit this file with your Firebase project details.
-// Get this from: console.firebase.google.com
-//   → Your project → Project Settings → Your apps → Web app
-//
-// Steps:
-// 1. Create Firebase project at console.firebase.google.com
-// 2. Enable Authentication → Google sign-in
-// 3. Create Firestore database (production mode)
-// 4. Paste your config below
-// 5. Deploy to Vercel by dragging this folder
-// ══════════════════════════════════════════════
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
-const FIREBASE_CONFIG = {
-  apiKey:            "REPLACE_API_KEY",
-  authDomain:        "REPLACE.firebaseapp.com",
-  projectId:         "REPLACE_PROJECT_ID",
-  storageBucket:     "REPLACE.appspot.com",
-  messagingSenderId: "REPLACE_SENDER_ID",
-  appId:             "REPLACE_APP_ID"
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDhSDk2JLRx7Gx3ostmFZ6IWqO8PnEdRaM",
+  authDomain: "sysmaps-3378d.firebaseapp.com",
+  projectId: "sysmaps-3378d",
+  storageBucket: "sysmaps-3378d.firebasestorage.app",
+  messagingSenderId: "21224827114",
+  appId: "1:21224827114:web:eb4ffd4249eff31a134f93",
+  measurementId: "G-Z5S9V3WBF8"
 };
 
-// ── FIRESTORE RULES (paste into Firebase Console → Firestore → Rules) ──
-//
-// rules_version = '2';
-// service cloud.firestore {
-//   match /databases/{database}/documents {
-//     match /users/{userId}/{document=**} {
-//       allow read, write: if request.auth != null && request.auth.uid == userId;
-//     }
-//   }
-// }
-//
-// NOTE: No Firebase Storage needed. Images are stored as base64 in
-// Firestore documents. This keeps everything on the free tier.
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
