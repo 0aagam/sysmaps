@@ -371,21 +371,20 @@
 <!-- NO Firebase Storage — images stored in Firestore as base64. Free. -->
 
 <!-- Initialize Firebase and load app as ES6 module -->
-<script src="js/env-loader.js"></script>
 <script>
-  // Initialize Firebase before loading modules
+  // Temporary Firebase config — will be overridden when modules load
   const FIREBASE_CONFIG = {
-    apiKey: window.ENV?.FIREBASE_API_KEY || "AIzaSyDhSDk2JLRx7Gx3ostmFZ6IWqO8PnEdRaM",
-    authDomain: window.ENV?.FIREBASE_AUTH_DOMAIN || "sysmaps-3378d.firebaseapp.com",
-    projectId: window.ENV?.FIREBASE_PROJECT_ID || "sysmaps-3378d",
-    storageBucket: window.ENV?.FIREBASE_STORAGE_BUCKET || "sysmaps-3378d.firebasestorage.app",
-    messagingSenderId: window.ENV?.FIREBASE_MESSAGING_SENDER_ID || "21224827114",
-    appId: window.ENV?.FIREBASE_APP_ID || "1:21224827114:web:eb4ffd4249eff31a134f93",
-    measurementId: window.ENV?.FIREBASE_MEASUREMENT_ID || "G-Z5S9V3WBF8"
+    apiKey: "AIzaSyDhSDk2JLRx7Gx3ostmFZ6IWqO8PnEdRaM",
+    authDomain: "sysmaps-3378d.firebaseapp.com",
+    projectId: "sysmaps-3378d",
+    storageBucket: "sysmaps-3378d.firebasestorage.app",
+    messagingSenderId: "21224827114",
+    appId: "1:21224827114:web:eb4ffd4249eff31a134f93",
+    measurementId: "G-Z5S9V3WBF8"
   };
   firebase.initializeApp(FIREBASE_CONFIG);
 </script>
-<!-- App entry point (ES6 module) -->
+<!-- App entry point (ES6 module) — loads env-loader first, then config -->
 <script type="module" src="js/main.js"></script>
 </body>
 </html>
