@@ -755,15 +755,86 @@ const Blocks = {
 
 // ── INIT ──────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
+  console.log('DOMContentLoaded: Initializing SysMap v5');
   Theme.init();
   Auth.init();
   App.renderSidebar();
+  
+  // Dock button listeners
+  document.querySelectorAll('[data-label="Home"]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      if (document.getElementById('workspaceScreen')?.classList.contains('hidden') === false) {
+        goHome();
+      }
+    });
+  });
+  
+  document.querySelectorAll('[data-label="New Space"]').forEach(btn => {
+    btn.addEventListener('click', openNewFolderModal);
+  });
+  
+  document.querySelectorAll('[data-label="New Node"]').forEach(btn => {
+    btn.addEventListener('click', openNewNodeModal);
+  });
+  
+  document.querySelectorAll('[data-label="Fit"]').forEach(btn => {
+    btn.addEventListener('click', () => Graph.zoomFit());
+  });
+  
+  document.querySelectorAll('[data-label="Layout"]').forEach(btn => {
+    btn.addEventListener('click', () => Graph.autoLayout());
+  });
+  
+  document.querySelectorAll('[data-label="Theme"]').forEach(btn => {
+    btn.addEventListener('click', openThemePanel);
+  });
+  
+  document.querySelectorAll('[data-label="More"]').forEach(btn => {
+    btn.addEventListener('click', openMoreSheet);
+  });
+  
+  // Workspace buttons
+  document.querySelectorAll('.back-btn').forEach(btn => {
+    btn.addEventListener('click', goHome);
+  });
+  
+  const sidebarNewBtn = document.getElementById('sidebarNewBtn');
+  if (sidebarNewBtn) sidebarNewBtn.addEventListener('click', openNewNodeModal);
+  
+  const editorCloseBtn = document.getElementById('editorCloseBtn');
+  if (editorCloseBtn) editorCloseBtn.addEventListener('click', () => App.closeEditor());
+  
+  // Graph buttons
+  document.querySelectorAll('.graph-btn').forEach(btn => {
+    const text = btn.textContent.trim();
+    if (text === '+') btn.addEventListener('click', () => Graph.zoom(1.25));
+    else if (text === '−') btn.addEventListener('click', () => Graph.zoom(0.8));
+    else if (text === '⊡') btn.addEventListener('click', () => Graph.zoomFit());
+    else if (text === '⬡') btn.addEventListener('click', () => Graph.autoLayout());
+  });
+  
+  // Block add buttons
   document.addEventListener('click', e => {
     if (e.target.closest('.bab-btn')) {
       const type = e.target.closest('.bab-btn').dataset.type;
       Blocks.add(type);
     }
   });
+  
+  // Delete and save buttons in editor
+  document.querySelectorAll('.btn-danger').forEach(btn => {
+    if (btn.textContent.includes('Delete')) {
+      btn.addEventListener('click', () => App.deleteNode());
+    }
+  });
+  
+  document.querySelectorAll('.ep-foot .btn-primary').forEach(btn => {
+    if (btn.textContent.includes('Save')) {
+      btn.addEventListener('click', () => App.saveNode());
+    }
+  });
+  
+  console.log('SysMap v5 initialized successfully');
 });
 
 function _showScreen(id) {
